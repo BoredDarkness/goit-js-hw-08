@@ -63,34 +63,38 @@ const images = [
     description: "Lighthouse Coast Sea",
   },
 ];
-const imgBox = document.querySelector(".gallery");
+const imagesList = document.querySelector(".gallery");
 
-imgBox.insertAdjacentHTML(
-  "beforeend",
-  images
+imagesList.insertAdjacentHTML("beforeend", createImg(images));
+imagesList.addEventListener("click", onClick);
+
+function createImg(images) {
+  return images
     .map(
-      (images) => `<li class="gallery-item">
-      <a class="gallery-link" href="${images.original}">
-        <img
-          class="gallery-image"
-          src="${images.preview}"
-          data-source="${images.original}"
-          alt="${images.description}"
-        />
-      </a>
-    </li>`
+      (img) => `
+    <li class="gallery-item">
+    <a class="gallery-link" href="${img.original}">
+      <img
+        class="gallery-image"
+        src="${img.preview}"
+        data-source="${img.original}"
+        alt="${img.description}"
+      />
+    </a>
+  </li>
+  `
     )
-    .join("")
-);
-addEventListener("click", (event) => {
-  event.preventDefault();
+    .join("");
+}
 
-  if (event.target.tagName.toLowerCase() === "img") {
-    const instance = basicLightbox.create(`
-    <img src="${event.target.dataset.source}" width="800" height="600">
-`);
-
-    instance.show();
+function onClick(event) {
+  if (event.target.nodeName !== "IMG") {
+    return;
   }
-  instance.close();
-});
+  event.preventDefault();
+  const originalImg = event.target.dataset.source;
+  const instance = basicLightbox.create(`
+  <img class='modal' src='${originalImg}' />
+  `);
+  instance.show();
+}

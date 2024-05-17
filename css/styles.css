@@ -20,8 +20,10 @@ li {
 .gallery-link {
 }
 .gallery-image {
+  display: block;
   width: 360px;
   height: 200px;
+  transition: all 200ms linear;
 }
 .gallery-image:hover {
   transform: scale(1.05);
